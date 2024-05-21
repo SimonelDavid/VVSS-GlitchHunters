@@ -1,0 +1,200 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AddPartController {
+  + AddPartController():
+  - service: InventoryService
+  - displayScene(ActionEvent, String): void
+  ~ handleOutsourcedRBtn(ActionEvent): void
+  + initialize(URL, ResourceBundle): void
+  ~ handleAddPartCancel(ActionEvent): void
+  ~ handleInhouseRBtn(ActionEvent): void
+  ~ handleAddPartSave(ActionEvent): void
+   service: InventoryService
+}
+class AddProductController {
+  + AddProductController():
+  - service: InventoryService
+  + initialize(URL, ResourceBundle): void
+  ~ handleCancelProduct(ActionEvent): void
+  ~ handleSaveProduct(ActionEvent): void
+  + updateDeleteProductTableView(): void
+  ~ handleAddProduct(ActionEvent): void
+  ~ handleDeleteProduct(ActionEvent): void
+  - displayScene(ActionEvent, String): void
+  ~ handleSearchProduct(ActionEvent): void
+   service: InventoryService
+}
+interface Controller << interface >> {
+   service: InventoryService
+}
+class InhousePart {
+  + InhousePart(int, String, double, int, int, int, int):
+  - machineId: int
+  + toString(): String
+   machineId: int
+}
+class Inventory {
+  + Inventory():
+  - autoPartId: int
+  - products: ObservableList<Product>
+  - autoProductId: int
+  - allParts: ObservableList<Part>
+  + addPart(Part): void
+  + addProduct(Product): void
+  + removeProduct(Product): void
+  + updatePart(int, Part): void
+  + updateProduct(int, Product): void
+  + lookupProduct(String): Product
+  + lookupPart(String): Part
+  + deletePart(Part): void
+   allParts: ObservableList<Part>
+   autoPartId: int
+   autoProductId: int
+   products: ObservableList<Product>
+}
+class InventoryRepository {
+  + InventoryRepository():
+  - inventory: Inventory
+  + lookupPart(String): Part
+  + readProducts(): void
+  + readParts(): void
+  + deleteProduct(Product): void
+  - getProductFromString(String): Product
+  + addPart(Part): void
+  + updatePart(int, Part): void
+  - getPartFromString(String): Part
+  + deletePart(Part): void
+  + writeAll(): void
+  + updateProduct(int, Product): void
+  + lookupProduct(String): Product
+  + addProduct(Product): void
+   allParts: ObservableList<Part>
+   autoPartId: int
+   inventory: Inventory
+   autoProductId: int
+   allProducts: ObservableList<Product>
+}
+class InventoryService {
+  + InventoryService(InventoryRepository):
+  + lookupPart(String): Part
+  + deletePart(Part): void
+  + addInhousePart(String, double, int, int, int, int): void
+  + updateInhousePart(int, int, String, double, int, int, int, int): void
+  + updateOutsourcedPart(int, int, String, double, int, int, int, String): void
+  + lookupProduct(String): Product
+  + updateProduct(int, int, String, double, int, int, int, ObservableList<Part>): void
+  + deleteProduct(Product): void
+  + addProduct(String, double, int, int, int, ObservableList<Part>): void
+  + addOutsourcePart(String, double, int, int, int, String): void
+   allParts: ObservableList<Part>
+   allProducts: ObservableList<Product>
+}
+class Main {
+  + Main():
+  + main(String[]): void
+  + start(Stage): void
+}
+class MainScreenController {
+  + MainScreenController():
+  - service: InventoryService
+  - modifyPartIndex: int
+  - modifyProductIndex: int
+  ~ handleAddProduct(ActionEvent): void
+  ~ handleDeleteProduct(ActionEvent): void
+  ~ handleModifyPart(ActionEvent): void
+  ~ handleExit(ActionEvent): void
+  ~ handleModifyProduct(ActionEvent): void
+  ~ handleAddPart(ActionEvent): void
+  + initialize(URL, ResourceBundle): void
+  ~ handlePartsSearchBtn(ActionEvent): void
+  ~ handleProductsSearchBtn(ActionEvent): void
+  - displayScene(ActionEvent, String): void
+  ~ handleDeletePart(ActionEvent): void
+   service: InventoryService
+   modifyPartIndex: int
+   modifyProductIndex: int
+}
+class ModifyPartController {
+  + ModifyPartController():
+  - service: InventoryService
+  ~ handleModifyPartSave(ActionEvent): void
+  ~ handleInhouseRBtn(ActionEvent): void
+  ~ handleOutsourcedRBtn(ActionEvent): void
+  + initialize(URL, ResourceBundle): void
+  ~ handleModifyPartCancel(ActionEvent): void
+  - fillWithData(): void
+  - displayScene(ActionEvent, String): void
+   service: InventoryService
+}
+class ModifyProductController {
+  + ModifyProductController():
+  - service: InventoryService
+  ~ handleCancelProduct(ActionEvent): void
+  ~ handleSaveProduct(ActionEvent): void
+  + initialize(URL, ResourceBundle): void
+  - displayScene(ActionEvent, String): void
+  + updateDeleteProductTableView(): void
+  ~ handleDeleteProduct(ActionEvent): void
+  ~ handleAddProduct(ActionEvent): void
+  - fillWithData(): void
+  ~ handleSearchProduct(ActionEvent): void
+   service: InventoryService
+}
+class OutsourcedPart {
+  + OutsourcedPart(int, String, double, int, int, int, String):
+  - companyName: String
+  + toString(): String
+   companyName: String
+}
+class Part {
+  + Part(int, String, double, int, int, int):
+  - inStock: int
+  - partId: int
+  - min: int
+  - max: int
+  - name: String
+  - price: double
+  + isValidPart(String, double, int, int, int, String): String
+  + toString(): String
+   name: String
+   min: int
+   partId: int
+   price: double
+   inStock: int
+   max: int
+}
+class Product {
+  + Product(int, String, double, int, int, int, ObservableList<Part>):
+  - min: int
+  - max: int
+  - name: String
+  - associatedParts: ObservableList<Part>
+  - productId: int
+  - inStock: int
+  - price: double
+  + isValidProduct(String, double, int, int, int, ObservableList<Part>, String): String
+  + addAssociatedPart(Part): void
+  + removeAssociatedPart(Part): void
+  + lookupAssociatedPart(String): Part
+  + toString(): String
+   productId: int
+   name: String
+   min: int
+   inStock: int
+   max: int
+   price: double
+   associatedParts: ObservableList<Part>
+}
+
+AddPartController        -[#008200,dashed]-^  Controller
+AddProductController     -[#008200,dashed]-^  Controller
+InhousePart              -[#000082,plain]-^  Part
+MainScreenController     -[#008200,dashed]-^  Controller
+ModifyPartController     -[#008200,dashed]-^  Controller
+ModifyProductController  -[#008200,dashed]-^  Controller
+OutsourcedPart           -[#000082,plain]-^  Part
+@enduml

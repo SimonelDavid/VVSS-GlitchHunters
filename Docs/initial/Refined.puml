@@ -1,0 +1,105 @@
+@startuml
+
+!theme plain
+skinparam linetype ortho
+
+package "Inventory Management" {
+  class Inventory {
+    - autoPartId: int
+    - autoProductId: int
+    - allParts: ObservableList<Part>
+    - products: ObservableList<Product>
+    + Inventory()
+    + addPart(Part): void
+    + addProduct(Product): void
+    + deletePart(Part): void
+    + deleteProduct(Product): void
+    + lookupPart(String): Part
+    + lookupProduct(String): Product
+    + updatePart(int, Part): void
+    + updateProduct(int, Product): void
+  }
+
+  class InventoryService {
+    - inventoryRepository: InventoryRepository
+    + InventoryService(InventoryRepository)
+    + addInhousePart(String, double, int, int, int, int): void
+    + addOutsourcePart(String, double, int, int, int, String): void
+    + addProduct(String, double, int, int, int, ObservableList<Part>): void
+    + deletePart(Part): void
+    + deleteProduct(Product): void
+    + lookupPart(String): Part
+    + lookupProduct(String): Product
+    + updateInhousePart(int, int, String, double, int, int, int, int): void
+    + updateOutsourcedPart(int, int, String, double, int, int, int, String): void
+    + updateProduct(int, int, String, double, int, int, int, ObservableList<Part>): void
+  }
+
+  class InventoryRepository {
+    - inventory: Inventory
+    + InventoryRepository()
+    + addPart(Part): void
+    + addProduct(Product): void
+    + deletePart(Part): void
+    + deleteProduct(Product): void
+    + lookupPart(String): Part
+    + lookupProduct(String): Product
+    + readParts(): void
+    + readProducts(): void
+    + updatePart(int, Part): void
+    + updateProduct(int, Product): void
+    + writeAll(): void
+  }
+}
+
+package "Parts Management" {
+  class Part {
+    - partId: int
+    - name: String
+    - price: double
+    - inStock: int
+    - min: int
+    - max: int
+    + Part(int, String, double, int, int, int)
+    + isValidPart(String, double, int, int, int, String): String
+    + toString(): String
+  }
+
+  class InhousePart {
+    - machineId: int
+    + InhousePart(int, String, double, int, int, int, int)
+    + toString(): String
+  }
+
+  class OutsourcedPart {
+    - companyName: String
+    + OutsourcedPart(int, String, double, int, int, int, String)
+    + toString(): String
+  }
+}
+
+package "Product Management" {
+  class Product {
+    - productId: int
+    - name: String
+    - price: double
+    - inStock: int
+    - min: int
+    - max: int
+    - associatedParts: ObservableList<Part>
+    + Product(int, String, double, int, int, int, ObservableList<Part>)
+    + addAssociatedPart(Part): void
+    + removeAssociatedPart(Part): void
+    + isValidProduct(String, double, int, int, int, ObservableList<Part>, String): String
+    + lookupAssociatedPart(String): Part
+    + toString(): String
+  }
+}
+
+InhousePart -up-|> Part
+OutsourcedPart -up-|> Part
+
+InventoryService .down.> InventoryRepository : uses
+InventoryService .down.> Inventory : uses
+
+@enduml
