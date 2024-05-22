@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+  </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="6f474b4c-22fd-4f14-afdc-f885fb0baab2" />
   </component>
