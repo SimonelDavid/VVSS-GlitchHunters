@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class InventoryRepositoryTestMockito {
@@ -15,9 +14,9 @@ class InventoryRepositoryTestMockito {
     @Test
     void testAddProduct() {
         // ARRANGE
-        var inventoryRepository = new InventoryRepository();
-        var product = mock(Product.class);
-        var part = mock(Part.class);
+        InventoryRepository inventoryRepository = new InventoryRepository();
+        Product product = mock(Product.class);
+        Part part = mock(Part.class);
         Mockito.when(product.getProductId()).thenReturn(0);
         Mockito.when(product.getAssociatedParts()).thenReturn(FXCollections.observableArrayList(part));
 
@@ -33,10 +32,10 @@ class InventoryRepositoryTestMockito {
     @Test
     void testDeleteProduct() {
         //ARRANGE
-        var inventoryRepository = new InventoryRepository();
-        var product1 = mock(Product.class);
-        var product2 = mock(Product.class);
-        var part = mock(Part.class);
+        InventoryRepository inventoryRepository = new InventoryRepository();
+        Product product1 = mock(Product.class);
+        Product product2 = mock(Product.class);
+        Part part = mock(Part.class);
 
         Mockito.when(product1.getProductId()).thenReturn(0);
         Mockito.when(product2.getProductId()).thenReturn(1);

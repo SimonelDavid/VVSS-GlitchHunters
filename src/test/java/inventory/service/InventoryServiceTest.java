@@ -21,7 +21,7 @@ class InventoryServiceTest {
 
     @BeforeEach
     void setup() {
-        try (var ignored = new FileWriter(REPOSITORY_DB)) {
+        try (FileWriter ignored = new FileWriter(REPOSITORY_DB)) {
             inventoryRepository = new InventoryRepository();
             inventoryService = new InventoryService(inventoryRepository);
         } catch (Exception exception) {
@@ -40,7 +40,7 @@ class InventoryServiceTest {
         // ASSERT
         assertTrue(errorMessages.isEmpty());
         assertEquals(1, inventoryRepository.getInventory().getParts().size());
-        final var addedPart = (InhousePart)inventoryRepository.getInventory().getParts().get(0);
+        InhousePart addedPart = (InhousePart)inventoryRepository.getInventory().getParts().get(0);
         assertEquals(name, addedPart.getName());
         assertEquals(price, addedPart.getPrice());
         assertEquals(inStock, addedPart.getStockCount());
@@ -49,7 +49,7 @@ class InventoryServiceTest {
         assertEquals(partDynamicValue, addedPart.getMachineId());
     }
 
-    private static Stream<Arguments> validInHouseParts() {
+    public static Stream<Arguments> validInHouseParts() {
         // ARRANGE
         return Stream.of(
                 Arguments.of("alternator", 200d, 10, 2, 100, 25),
@@ -70,7 +70,7 @@ class InventoryServiceTest {
         errorMessages.forEach(error -> assertTrue(validationResult.contains(error)));
     }
 
-    private static Stream<Arguments> invalidInHouseParts() {
+    public static Stream<Arguments> invalidInHouseParts() {
         // ARRANGE
         return Stream.of(
                 Arguments.of("", 10d, 5, 10, 20, List.of("A name has not been entered. ")),

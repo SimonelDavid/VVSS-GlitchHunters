@@ -4,6 +4,7 @@ import inventory.model.Inventory;
 import inventory.model.Product;
 import inventory.repository.InventoryRepository;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ public class InventoryServiceE2EIntegrationTest {
 
     @BeforeEach
     void setup() {
-        try (var ignored = new FileWriter(REPOSITORY_DB)) {
+        try (FileWriter ignored = new FileWriter(REPOSITORY_DB)) {
             inventoryRepository = new InventoryRepository();
             inventoryService = new InventoryService(inventoryRepository);
         } catch (Exception exception) {
@@ -37,7 +38,7 @@ public class InventoryServiceE2EIntegrationTest {
     void testAddProduct() {
         inventoryService.addProduct("Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
 
-        var products = inventoryService.getAllProducts();
+        ObservableList<Product> products = inventoryService.getAllProducts();
         assertEquals(1, products.size());
         assertEquals(product, products.get(0));
     }
@@ -45,7 +46,7 @@ public class InventoryServiceE2EIntegrationTest {
     @Test
     void testDeleteProduct() {
         inventoryService.addProduct("Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
-        var products = inventoryService.getAllProducts();
+        ObservableList<Product> products = inventoryService.getAllProducts();
         assertEquals(1, products.size());
         inventoryService.deleteProduct(product);
 

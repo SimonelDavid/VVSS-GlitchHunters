@@ -4,8 +4,10 @@ import inventory.model.Inventory;
 import inventory.model.Product;
 import inventory.repository.InventoryRepository;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -24,7 +26,7 @@ public class InventoryServiceIntegrationTest {
 
     @BeforeEach
     void setup() {
-        try (var ignored = new FileWriter(REPOSITORY_DB)) {
+        try (FileWriter ignored = new FileWriter(REPOSITORY_DB)) {
             inventoryRepository = new InventoryRepository();
             inventoryService = new InventoryService(inventoryRepository);
         } catch (Exception exception) {
@@ -43,7 +45,7 @@ public class InventoryServiceIntegrationTest {
     void testAddProduct() {
         inventoryService.addProduct("Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
 
-        var products = inventoryService.getAllProducts();
+        ObservableList<Product> products = inventoryService.getAllProducts();
         assertEquals(1, products.size());
         assertEquals(product, products.get(0));
         verify(inventory).addProduct(eq(product));
@@ -52,5 +54,14 @@ public class InventoryServiceIntegrationTest {
 
     @Test
     void testDeleteProduct() {
+        ArgumentCaptor<Product> valueCapture = ArgumentCaptor.forClass(Product.class);
+        doNothing().when(inventory).removeProduct(valueCapture.capture());
+
+        inventoryService.addProduct("Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
+        ObservableList<Product> products = inventoryService.getAllProducts();
+        assertEquals(1, products.size());
+        inventoryService.deleteProduct(products.get(0));
+
+        verify(inventory).removeProduct(product);
     }
 }

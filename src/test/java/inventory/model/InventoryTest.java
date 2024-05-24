@@ -26,7 +26,7 @@ class InventoryTest {
 
     @BeforeEach
     void setup() {
-        try (var ignored = new FileWriter(REPOSITORY_DB)) {
+        try (FileWriter ignored = new FileWriter(REPOSITORY_DB)) {
             inventory = new Inventory();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -42,7 +42,7 @@ class InventoryTest {
     @Test
     @DisplayName("F02_TC03")
     void whenNoPartsAndSearchItemValid_ShouldReturnNull() {
-        var searchItem = "far";
+        String searchItem = "far";
 
         assertNull(inventory.lookupPart(searchItem));
     }

@@ -1,7 +1,5 @@
 package inventory.service;
 
-import inventory.model.InhousePart;
-import inventory.model.Inventory;
 import inventory.model.Product;
 import inventory.repository.InventoryRepository;
 import javafx.collections.FXCollections;
@@ -9,7 +7,6 @@ import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class InventoryServiceTestMockito {
@@ -17,9 +14,9 @@ class InventoryServiceTestMockito {
     @Test
     void testAddProduct() {
         // ARRANGE
-        var inventoryRepository = mock(InventoryRepository.class);
-        var inventoryService = new InventoryService(inventoryRepository);
-        var product = new Product(1, "Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
+        InventoryRepository inventoryRepository = mock(InventoryRepository.class);
+        InventoryService inventoryService = new InventoryService(inventoryRepository);
+        Product product = new Product(1, "Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
       //  var part = new InhousePart(1, "Part 1", 50.0, 5, 1, 10, 1);
         //product.addAssociatedPart(part);
 
@@ -39,10 +36,10 @@ class InventoryServiceTestMockito {
 
     @Test
     void testUpdateProduct(){
-        var inventoryRepository = mock(InventoryRepository.class);
-        var inventoryService = new InventoryService(inventoryRepository);
-        var product = new Product(1, "Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
-        var updatedProduct = new Product(1, "Updated Product", 200.0, 20, 10, 100, FXCollections.observableArrayList());
+        InventoryRepository inventoryRepository = mock(InventoryRepository.class);
+        InventoryService inventoryService = new InventoryService(inventoryRepository);
+        Product product = new Product(1, "Test Product", 100.0, 10, 5, 50, FXCollections.observableArrayList());
+        Product updatedProduct = new Product(1, "Updated Product", 200.0, 20, 10, 100, FXCollections.observableArrayList());
 
         Mockito.doNothing().when(inventoryRepository).updateProduct(0, updatedProduct);
         Mockito.when(inventoryRepository.getAllProducts()).thenReturn(FXCollections.observableArrayList(updatedProduct));
